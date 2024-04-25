@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   HttpException,
   HttpStatus,
   Injectable,
@@ -9,10 +10,10 @@ import { UsersService } from '@src/users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcryptjs from 'bcryptjs';
 import { User } from '@src/users/user.entity';
-import { AuthInfo } from './models/auth-info';
 import { ConfigService } from '@nestjs/config';
 import { JwtPayload } from './models/jwt-payload';
 import { RegisterDto } from '@src/auth/dto/register-dto';
+import { AuthInfo } from '@src/auth/models/auth-info';
 
 @Injectable()
 export class AuthService {
@@ -52,17 +53,25 @@ export class AuthService {
   private async generateToken(user: User): Promise<AuthInfo> {
     const payload: JwtPayload = {
       email: user.email,
+      username: user.username,
       id: user.id,
       roles: user.roles,
     };
-    return {
-      accessToken: this.jwtService.sign(payload),
-    };
+    return { accessToken: this.jwtService.sign(payload) };
   }
 
   private async validateUser(userDto: LoginDto) {
-    const user = await this.usersService.getUserByEmail(userDto.email);
+    if ((!userDto.email && !userDto.username) || !userDto.password) {
+      throw new BadRequestException({ message: 'Invalid user data' });
+    }
 
+    const user = userDto.email
+      ? await this.usersService.getUserByEmail(userDto.email)
+      : await this.usersService.getUserByUsername(userDto.username);
+
+    if (!user) {
+      throw new BadRequestException({ message: 'User not found' });
+    }
     const passwordEquals = await bcryptjs.compare(
       userDto.password,
       user.password,

@@ -5,6 +5,7 @@ import { User } from './user.entity';
 import { RoleGuard, RoleGuardMeta } from '@src/roles/role.guard';
 import { ORoles } from '@src/roles/roles';
 import { UserDto } from '@src/users/dto/user-dto';
+import { JwtAuthGuard } from '@src/auth/jwt-auth.guard';
 
 @ApiTags('users')
 @Controller('users')
@@ -12,6 +13,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get('ping')
+  @UseGuards(JwtAuthGuard)
   ping() {
     return {
       ping: 'ping',

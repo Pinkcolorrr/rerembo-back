@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
-import { EntityManager, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user-dto';
 import { RolesService } from '@src/roles/roles.service';
 import { UserMapper } from './user-mapper';
@@ -10,7 +10,6 @@ import { UserMapper } from './user-mapper';
 export class UsersService {
   constructor(
     @InjectRepository(User) private readonly usersRepository: Repository<User>,
-    @InjectEntityManager() private readonly entityManager: EntityManager,
     private readonly rolesService: RolesService,
   ) {}
 
@@ -39,6 +38,13 @@ export class UsersService {
     return this.usersRepository.findOne({
       relations: ['roles'],
       where: { email },
+    });
+  }
+
+  async getUserByUsername(username: string) {
+    return this.usersRepository.findOne({
+      relations: ['roles'],
+      where: { username },
     });
   }
 }
