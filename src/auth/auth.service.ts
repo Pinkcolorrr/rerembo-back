@@ -5,14 +5,14 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { LoginDto } from './dto/login-dto';
+import { LoginDto } from './dto/login.dto';
 import { UsersService } from '@src/users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcryptjs from 'bcryptjs';
 import { User } from '@src/users/user.entity';
 import { ConfigService } from '@nestjs/config';
 import { JwtPayload } from './models/jwt-payload';
-import { RegisterDto } from '@src/auth/dto/register-dto';
+import { RegisterDto } from '@src/auth/dto/register,dto';
 import { AuthInfo } from '@src/auth/models/auth-info';
 
 @Injectable()

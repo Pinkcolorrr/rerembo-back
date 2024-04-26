@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { join } from 'path';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -7,6 +7,7 @@ import { UsersModule } from './users/users.module';
 import { RolesModule } from './roles/roles.module';
 import { AuthModule } from './auth/auth.module';
 import { RolesController } from './roles/roles.controller';
+import { FolderModule } from '@src/folder/folder.module';
 
 const env = process.env.NODE_ENV || 'dev';
 
@@ -35,6 +36,7 @@ const env = process.env.NODE_ENV || 'dev';
     UsersModule,
     RolesModule,
     AuthModule,
+    FolderModule,
   ],
   controllers: [RolesController],
   providers: [],
