@@ -11,6 +11,8 @@ import { FolderModule } from '@src/folder/folder.module';
 
 const env = process.env.NODE_ENV || 'dev';
 
+console.log(process.env.NODE_ENV);
+
 @Module({
   imports: [
     ConfigModule.forRoot({

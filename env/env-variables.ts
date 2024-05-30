@@ -6,4 +6,5 @@ export interface EnvVariables {
   POSTGRES_PORT: string;
   POSTGRES_DB: string;
   POSTGRES_DB_SYNC: string;
+  SECRET: string;
 }
